@@ -170,12 +170,12 @@ for (const [key, value] of constants)
 const replacements = `"(${[...constants.values()].join('|')})"`;
 
 content += `
-const types = ${stringify(types, null, '  ').replace(
+const types = ${stringify(types, null, '\t').replace(
   new RegExp(`${replacements}:`, 'g'),
   (_, $1) => `[${findKey($1)}]:`,
 )};
 
-const extensions = ${stringify(values, null, '  ').replace(
+const extensions = ${stringify(values, null, '\t').replace(
   new RegExp(`${replacements},`, 'g'),
   (_, $1) => `${findKey($1)},`,
 )};
@@ -183,14 +183,14 @@ const extensions = ${stringify(values, null, '  ').replace(
 const noDot = ${noDot};
 
 export default new Proxy(
-  extensions,
-  {
-    has: ($, type) => $.hasOwnProperty(noDot(type)),
-    get: ($, type) => {
-      const value = $[noDot(type)];
-      return value && \`\${value[0]}/\${types[value[0]][value[1]]}\`;
-    },
-  }
+\textensions,
+\t{
+\t\thas: ($, type) => $.hasOwnProperty(noDot(type)),
+\t\tget: ($, type) => {
+\t\t\tconst value = $[noDot(type)];
+\t\t\treturn value && \`\${value[0]}/\${types[value[0]][value[1]]}\`;
+\t\t},
+\t}
 );
 `;
 

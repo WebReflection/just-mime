@@ -1,9 +1,15 @@
 {
   "name": "just-mime",
-  "version": "0.0.0",
-  "bin": "./index.js",
+  "version": "0.1.0",
+  "bin": {
+    "just-mime": "index.js"
+  },
   "type": "module",
-  "keywords": ["mime-type", "module", "easy"],
+  "keywords": [
+    "mime-type",
+    "module",
+    "easy"
+  ],
   "author": "Andrea Giammarchi",
   "license": "MIT",
   "description": "A simple way to retrieve a mime-type from an extension",

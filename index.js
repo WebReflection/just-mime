@@ -126,20 +126,13 @@ for (const [key, details] of entries(db)) {
     }
     continue;
   }
-  let drop = false;
+
+  // better safe than sorr ... ehm, duplicated!
   let i = types[prefix].indexOf(mime);
-  if (i < 0) {
-    drop = true;
-    i = types[prefix].push(mime) - 1;
-  }
+  if (i < 0) i = types[prefix].push(mime) - 1;
   for (const value of extensions) {
-    if (value in values) {
-      if (drop)
-        types[prefix].pop();
-    }
-    else {
+    if (!(value in values))
       values[value] = [prefix, i];
-    }
   }
 }
 
@@ -162,21 +155,21 @@ if (oneOff) {
   }
 }
 
-const replacements = [...constants.values()].join('|');
-
 let content = '';
 
 for (const [key, value] of constants)
   content += `const ${key} = ${stringify(value)};\n`;
 
+const replacements = `"(${[...constants.values()].join('|')})"`;
+
 content += `
 const types = ${stringify(types, null, '  ').replace(
-  new RegExp(`"(${replacements})":`, 'g'),
+  new RegExp(`${replacements}:`, 'g'),
   (_, $1) => `[${findKey($1)}]:`,
 )};
 
 const extensions = ${stringify(values, null, '  ').replace(
-  new RegExp(`"(${replacements})",`, 'g'),
+  new RegExp(`${replacements},`, 'g'),
   (_, $1) => `${findKey($1)},`,
 )};
 

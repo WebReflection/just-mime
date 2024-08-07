@@ -12,6 +12,12 @@ const sources = new Set;
 const valid = new Set;
 const exclude = [];
 
+const error = message => {
+  console.error(message);
+  console.error(`type just-mime --help to know more`);
+  process.exit(1);
+};
+
 const findKey = $ => {
   for (const [key, value] of constants) {
     if (is(value, $)) return key;
@@ -62,18 +68,12 @@ for (let i = 0; i < args.length; i++) {
         for (const ext of exts)
           include.add(ext);
       }
-      else {
-        console.error(`Unknown extension in ${exts.join(',')} list`);
-        process.exit(1);
-      }
+      else error(`Unknown extension in ${exts.join(',')} list`);
       break;
     }
     case '--for': {
       oneOff = noDot(args.at(++i) || '');
-      if (!oneOff) {
-        console.error(`Undefined --for extension`);
-        process.exit(1);
-      }
+      if (!oneOff) error(`Undefined --for extension`);
       break;
     }
     case '--help': {
@@ -97,8 +97,7 @@ for (let i = 0; i < args.length; i++) {
       break;
     }
     default: {
-      console.error(`Unkwnown argument ${args[i]}`);
-      process.exit(1);
+      error(`Unknown argument ${args[i]}`);
       break;
     }
   }
@@ -152,10 +151,7 @@ for (const [key, details] of entries(db)) {
 }
 
 for (const source of sources) {
-  if (!valid.has(source)) {
-    console.error(`Unknown db source ${source}`);
-    process.exit(1);
-  }
+  if (!valid.has(source)) error(`Unknown db source ${source}`);
 }
 
 if (oneOff) {
@@ -164,10 +160,7 @@ if (oneOff) {
     process.stdout.write(`${prefix}/${types[prefix][i]}`);
     process.exit(0);
   }
-  else {
-    console.error(`Unknown extension ${oneOff}`);
-    process.exit(1);
-  }
+  else error(`Unknown extension ${oneOff}`);
 }
 
 let content = '';

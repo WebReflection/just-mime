@@ -96,6 +96,11 @@ for (let i = 0; i < args.length; i++) {
       process.exit(0);
       break;
     }
+    default: {
+      console.error(`Unkwnown argument ${args[i]}`);
+      process.exit(1);
+      break;
+    }
   }
 }
 

@@ -84,10 +84,11 @@ for (let i = 0; i < args.length; i++) {
 # produce an optimized ESM file to do the same\x1b[0m
 
     --help                    \x1b[2m# this message\x1b[0m
-    --db apache,iana,nginx    \x1b[2m# the optional db source to consider\x1b[0m
     --for ext                 \x1b[2m# convert an extension to its mime-type\x1b[0m
     --include png,svg,txt     \x1b[2m# extensions (only) to include\x1b[0m
     --exclude ^vnd.,^x-,woff  \x1b[2m# mime types (only) to exclude\x1b[0m
+    --db iana,apache,nginx    \x1b[2m# the optional db source to consider\x1b[0m
+                              \x1b[2m# which is \x1b[0miana\x1b[2m by default\x1b[0m
 
 \x1b[2m# (c) Andrea Giammarchi - MIT\x1b[0m
 \x1b[2m# https://github.com/WebReflection/just-mime\x1b[0m
@@ -98,10 +99,12 @@ for (let i = 0; i < args.length; i++) {
   }
 }
 
+if (!sources.size) sources.add('iana');
+
 for (const [key, details] of entries(db)) {
   const { extensions, source } = details;
   if (source) valid.add(source);
-  if (!extensions || (sources.size && !sources.has(source))) continue;
+  if (!extensions || !sources.has(source)) continue;
   if (include.size) {
     let consider = false;
     for (const value of extensions) {

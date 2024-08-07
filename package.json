@@ -1,0 +1,21 @@
+{
+  "name": "just-mime",
+  "version": "0.0.0",
+  "bin": "./index.js",
+  "type": "module",
+  "keywords": ["mime-type", "module", "easy"],
+  "author": "Andrea Giammarchi",
+  "license": "MIT",
+  "description": "A simple way to retrieve a mime-type from an extension",
+  "devDependencies": {
+    "mime-db": "^1.53.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WebReflection/just-mime.git"
+  },
+  "bugs": {
+    "url": "https://github.com/WebReflection/just-mime/issues"
+  },
+  "homepage": "https://github.com/WebReflection/just-mime#readme"
+}

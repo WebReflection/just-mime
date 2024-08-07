@@ -131,6 +131,13 @@ for (const [key, details] of entries(db)) {
   let i = types[prefix].indexOf(mime);
   if (i < 0) i = types[prefix].push(mime) - 1;
   for (const value of extensions) {
+    // here the thing ... some prefix/mime
+    // could've been addressed already and
+    // if that's the case I can't remove it from
+    // types so ... this might create some duplicate
+    // but the logic to avoid these duplicates might
+    // also be a bit convoluted or slow ... ignore
+    // for now, still a TODO to tackle
     if (!(value in values))
       values[value] = [prefix, i];
   }

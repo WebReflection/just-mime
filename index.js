@@ -105,6 +105,8 @@ for (let i = 0; i < args.length; i++) {
 
 if (!sources.size) sources.add('iana');
 
+let loop = true;
+
 for (const [key, details] of entries(db)) {
   const { extensions, source } = details;
   if (source) valid.add(source);
@@ -145,13 +147,21 @@ for (const [key, details] of entries(db)) {
     // but the logic to avoid these duplicates might
     // also be a bit convoluted or slow ... ignore
     // for now, still a TODO to tackle
-    if (!(value in values))
+    if (!(value in values)) {
       values[value] = [prefix, i];
+      if (oneOff === value) {
+        loop = false;
+        break;
+      }
+    }
   }
+  if (!loop) break;
 }
 
-for (const source of sources) {
-  if (!valid.has(source)) error(`Unknown db source ${source}`);
+if (loop) {
+  for (const source of sources) {
+    if (!valid.has(source)) error(`Unknown db source ${source}`);
+  }
 }
 
 if (oneOff) {

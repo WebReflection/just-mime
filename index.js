@@ -41,18 +41,18 @@ for (let i = 0; i < args.length; i++) {
       break;
     }
     case '--exclude': {
-      const exts = (args.at(++i) || '').split(',');
-      for (let value of exts) {
-        if (value.startsWith('^')) {
-          value = value.slice(1);
-          exclude.push(s => s.startsWith(value));
+      const types = (args.at(++i) || '').split(',');
+      for (let mime of types) {
+        if (mime.startsWith('^')) {
+          mime = mime.slice(1);
+          exclude.push(s => s.startsWith(mime));
         }
-        else if (value.endsWith('$')) {
-          value = value.slice(0, -1);
-          exclude.push(s => s.endsWith(value));
+        else if (mime.endsWith('$')) {
+          mime = mime.slice(0, -1);
+          exclude.push(s => s.endsWith(mime));
         }
         else
-          exclude.push(s => s.includes(value));
+          exclude.push(s => s.includes(mime));
       }
       break;
     }
@@ -87,7 +87,7 @@ for (let i = 0; i < args.length; i++) {
     --db apache,iana,nginx    \x1b[2m# the optional db source to consider\x1b[0m
     --for ext                 \x1b[2m# convert an extension to its mime-type\x1b[0m
     --include png,svg,txt     \x1b[2m# extensions (only) to include\x1b[0m
-    --exclude ^vnd.,^x-,woff  \x1b[2m# extensions or mime to exclude\x1b[0m
+    --exclude ^vnd.,^x-,woff  \x1b[2m# mime types (only) to exclude\x1b[0m
 
 \x1b[2m# (c) Andrea Giammarchi - MIT\x1b[0m
 \x1b[2m# https://github.com/WebReflection/just-mime\x1b[0m

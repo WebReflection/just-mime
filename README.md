@@ -4,29 +4,31 @@ A simple way to retrieve a mime-type from an extension.
 
 ## Usage
 
+Either install this module via `npm i -g just-mime` and then use `just-mime` as it is or:
+
 ```sh
 # prints out `text/javascript`
-npx just-mime --for js
+bunx just-mime --for js
 
 # prints out `application/javascript`
-npx just-mime --db apache --for js
+bunx just-mime --db apache --for js
 
 # prints out an ECMAScript module to
 # eventually store and use somewhere
-npx just-mime --db apache > mime.js
+bunx just-mime --db apache > mime.js
 
 # prints out an ESM with only some
 # extension recognized
-npx just-mime --db=apache,iana --include=png,html,css,jpg,js,svg
+bunx just-mime --db=apache,iana --include=png,html,css,jpg,js,svg
 
 # prints out an ESM with all possible results
 # except those mime types that are not desired
 # (include is for extensions, exclude is for mime types)
-npx just-mime --exclude ^vnd.,^x-,others
+bunx just-mime --exclude ^vnd.,^x-,others
 # exclude supports ^ and $ for prefix/suffix cases
 
 # it shows an informative help message
-npx just-mime --help
+bunx just-mime --help
 ```
 
 ### Output Example

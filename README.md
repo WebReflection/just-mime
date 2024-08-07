@@ -8,9 +8,12 @@ Either install this module via `npm i -g just-mime` and then use `just-mime` as 
 
 ```sh
 # prints out `text/javascript`
+# because it uses "iana" as default db
+# unless not specified differently
 bunx just-mime --for js
 
 # prints out `application/javascript`
+# because it uses the apache db as reference
 bunx just-mime --db apache --for js
 
 # prints out an ECMAScript module to
@@ -41,7 +44,7 @@ const TEXT = "text";
 const types = {
   [APPLICATION]: ["javascript"],
   [IMAGE]: ["jpeg", "png", "svg+xml"],
-  [TEXT]: ["css", "html"]
+  [TEXT]: ["css", "html", "javascript"]
 };
 
 const extensions = {

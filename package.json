@@ -13,9 +13,6 @@
   "author": "Andrea Giammarchi",
   "license": "MIT",
   "description": "A simple way to retrieve a mime-type from an extension",
-  "devDependencies": {
-    "mime-db": "^1.53.0"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/WebReflection/just-mime.git"
@@ -23,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/WebReflection/just-mime/issues"
   },
-  "homepage": "https://github.com/WebReflection/just-mime#readme"
+  "homepage": "https://github.com/WebReflection/just-mime#readme",
+  "dependencies": {
+    "mime-db": "^1.53.0"
+  }
 }

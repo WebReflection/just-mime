@@ -23,6 +23,7 @@ bunx just-mime --db apache > mime.js
 # prints out an ESM with only some
 # extension recognized
 bunx just-mime --db=apache,iana --include=png,html,css,jpg,js,svg
+# @see Output Example
 
 # prints out an ESM with all possible results
 # except those mime types that are not desired
@@ -64,6 +65,7 @@ const extensions = {
 
 const noDot = type => type.startsWith('.') ? type.slice(1) : type;
 
+/** @type {{"ext1":"mime1"},{"ext2":"mime2"}} */
 export default new Proxy(
   extensions,
   {

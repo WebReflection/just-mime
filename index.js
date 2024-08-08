@@ -6,6 +6,7 @@ const { stringify } = JSON;
 
 const types = create(null);
 const values = create(null);
+const ts = create(null);
 const constants = new Map;
 const include = new Set;
 const sources = new Set;
@@ -148,6 +149,7 @@ for (const [key, details] of entries(db)) {
     // also be a bit convoluted or slow ... ignore
     // for now, still a TODO to tackle
     if (!(value in values)) {
+      ts[value] = [prefix, mime].join('/');
       values[value] = [prefix, i];
       if (oneOff === value) {
         loop = false;
@@ -186,22 +188,26 @@ const types = ${stringify(types, null, '\t').replace(
   (_, $1) => `[${findKey($1)}]:`,
 )};
 
-const extensions = ${stringify(values, null, '\t').replace(
+const extensions = ${stringify(values).replace(
   new RegExp(`${replacements},`, 'g'),
   (_, $1) => `${findKey($1)},`,
-)};
+).replace(
+  /("[^"]+?":)\[([^,]+?),(\d+)\]/g,
+  '\n	$1 [$2, $3]'
+).replace(']}', ']\n}')};
 
 const noDot = ${noDot};
 
+/** @type {${stringify(ts)}} */
 export default new Proxy(
-\textensions,
-\t{
-\t\thas: ($, type) => $.hasOwnProperty(noDot(type)),
-\t\tget: ($, type) => {
-\t\t\tconst value = $[noDot(type)];
-\t\t\treturn value && \`\${value[0]}/\${types[value[0]][value[1]]}\`;
-\t\t},
-\t}
+	extensions,
+	{
+		has: ($, type) => $.hasOwnProperty(noDot(type)),
+		get: ($, type) => {
+			const value = $[noDot(type)];
+			return value && \`\${value[0]}/\${types[value[0]][value[1]]}\`;
+		},
+	}
 );
 `;
 

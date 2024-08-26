@@ -188,25 +188,23 @@ const types = ${stringify(types, null, '\t').replace(
   (_, $1) => `[${findKey($1)}]:`,
 )};
 
-const extensions = ${stringify(values).replace(
-  new RegExp(`${replacements},`, 'g'),
-  (_, $1) => `${findKey($1)},`,
-).replace(
-  /("[^"]+?":)\[([^,]+?),(\d+)\]/g,
-  '\n	$1 [$2, $3]'
-).replace(']}', ']\n}')};
-
 const noDot = ${noDot};
 
 /** @type {${stringify(ts)}} */
 export default new Proxy(
-	extensions,
+	${stringify(values).replace(
+    new RegExp(`${replacements},`, 'g'),
+    (_, $1) => `${findKey($1)},`,
+  ).replace(
+    /("[^"]+?":)\[([^,]+?),(\d+)\]/g,
+    '\n		$1 [$2, $3]'
+  ).replace(']}', ']\n}').replace(/^}/m, '	}')},
 	{
 		has: ($, type) => $.hasOwnProperty(noDot(type)),
 		get: ($, type) => {
 			const value = $[noDot(type)];
 			return value && \`\${value[0]}/\${types[value[0]][value[1]]}\`;
-		},
+		}
 	}
 );
 `;

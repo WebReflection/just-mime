@@ -175,6 +175,48 @@ if (oneOff) {
   else error(`Unknown extension ${oneOff}`);
 }
 
+// final cleanup (passes through all extensions and drop unnecessary data)
+const uselessTypes = structuredClone(types);
+for (const [_, [type, i]] of entries(values))
+  delete uselessTypes[type][i];
+
+for (const [type, _] of entries(uselessTypes)) {
+  for (let list = uselessTypes[type], i = 0; i < list.length; i++) {
+    if (list[i]) {
+      uselessTypes[type].splice(i, 1);
+      types[type].splice(i, 1);
+      if (!types[type].length) {
+        for (const [key, value] of constants) {
+          if (value === type) constants.delete(key);
+        }
+        constants.delete(type);
+        delete types[type];
+      }
+      for (const [ext, [t, j]] of entries(values)) {
+        if (t === type && i < j)
+          values[ext] = [t, j - 1];
+      }
+      i--;
+    }
+  }
+}
+
+// final validation (passes through all extensions and check data)
+const usefulTypes = structuredClone(types);
+for (const [ext, [type, i]] of entries(values)) {
+  if (!types[type][i]) {
+    console.error({ ext, type, i, data: types[type] });
+    throw new Error('Invalid data');
+  }
+  delete usefulTypes[type][i];
+}
+for (const [key, value] of entries(usefulTypes)) {
+  if (value.some(Boolean)) {
+    console.error({ key, value });
+    throw new Error('Unexpected leftover');
+  }
+}
+
 let content = '';
 
 for (const [key, value] of constants)

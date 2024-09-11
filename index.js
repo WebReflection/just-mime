@@ -39,6 +39,7 @@ for (const arg of process.argv.slice(2)) {
 }
 
 let oneOff = '';
+let asJSON = false;
 
 for (let i = 0; i < args.length; i++) {
   switch (args[i]) {
@@ -72,6 +73,10 @@ for (let i = 0; i < args.length; i++) {
       else error(`Unknown extension in ${exts.join(',')} list`);
       break;
     }
+    case '--json': {
+      asJSON = true;
+      break;
+    }
     case '--for': {
       oneOff = noDot(args.at(++i) || '');
       if (!oneOff) error(`Undefined --for extension`);
@@ -85,6 +90,7 @@ for (let i = 0; i < args.length; i++) {
 # produce an optimized ESM file to do the same\x1b[0m
 
     --help                    \x1b[2m# this message\x1b[0m
+    --json                    \x1b[2m# produce a JSON output instead\x1b[0m
     --for ext                 \x1b[2m# convert an extension to its mime-type\x1b[0m
     --include png,svg,txt     \x1b[2m# extensions (only) to include\x1b[0m
     --exclude ^vnd.,^x-,woff  \x1b[2m# mime types (only) to exclude\x1b[0m
@@ -250,5 +256,12 @@ export default new Proxy(
 	}
 );
 `;
+
+if (asJSON) {
+  const json = create(null);
+  for (const [ext, [type, i]] of entries(values))
+    json[ext] = `${type}/${types[type][i]}`;
+  content = JSON.stringify(json, null, '\t');
+}
 
 process.stdout.write(content);

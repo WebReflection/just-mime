@@ -31,6 +31,10 @@ bunx just-mime --db=apache,iana --include=png,html,css,jpg,js,svg
 bunx just-mime --exclude ^vnd.,^x-,others
 # exclude supports ^ and $ for prefix/suffix cases
 
+# produces a direct `{"ext": "mime"}` json object instead of a module
+# (less minification friendly but more compatible with other PLs)
+bunx just-mime --json
+
 # it shows an informative help message
 bunx just-mime --help
 ```

@@ -74,7 +74,7 @@ const noDot = type => type.startsWith('.') ? type.slice(1) : type;
 export default new Proxy(
   extensions,
   {
-    has: ($, type) => $.hasOwnProperty(noDot(type)),
+    has: ($, type) => noDot(type) in $,
     get: ($, type) => {
       const value = $[noDot(type)];
       return value ? `${value[0]}/${types[value[0]][value[1]]}` : 'application/octet-stream';

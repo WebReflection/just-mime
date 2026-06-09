@@ -248,7 +248,7 @@ export default new Proxy(
     '\n		$1 [$2, $3]'
   ).replace(']}', ']\n}').replace(/^}/m, '	}')},
 	{
-		has: ($, type) => $.hasOwnProperty(noDot(type)),
+		has: ($, type) => noDot(type) in $,
 		get: ($, type) => {
 			const value = $[noDot(type)];
 			return value && \`\${value[0]}/\${types[value[0]][value[1]]}\`;

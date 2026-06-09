@@ -77,7 +77,7 @@ export default new Proxy(
     has: ($, type) => noDot(type) in $,
     get: ($, type) => {
       const value = $[noDot(type)];
-      return value ? `${value[0]}/${types[value[0]][value[1]]}` : 'application/octet-stream';
+      return value && `${value[0]}/${types[value[0]][value[1]]}`;
     },
   }
 );

@@ -243,7 +243,7 @@ export default new Proxy(
 	${stringify(values).replace(
     new RegExp(`${replacements},`, 'g'),
     (_, $1) => `${findKey($1)},`,
-  ).replace(
+  ).replace('{', '{\n\t\t__proto__: null,').replace(
     /("[^"]+?":)\[([^,]+?),(\d+)\]/g,
     '\n		$1 [$2, $3]'
   ).replace(']}', ']\n}').replace(/^}/m, '	}')},
@@ -251,7 +251,7 @@ export default new Proxy(
 		has: ($, type) => $.hasOwnProperty(noDot(type)),
 		get: ($, type) => {
 			const value = $[noDot(type)];
-			return value && \`\${value[0]}/\${types[value[0]][value[1]]}\`;
+			return value ? \`\${value[0]}/\${types[value[0]][value[1]]}\` : 'application/octet-stream';
 		}
 	}
 );

@@ -53,6 +53,7 @@ const types = {
 };
 
 const extensions = {
+  __proto__: null,
   "js": [APPLICATION, 0],
   "jpeg": [IMAGE, 0],
   "jpg": [IMAGE, 0],
@@ -76,7 +77,7 @@ export default new Proxy(
     has: ($, type) => $.hasOwnProperty(noDot(type)),
     get: ($, type) => {
       const value = $[noDot(type)];
-      return value && `${value[0]}/${types[value[0]][value[1]]}`;
+      return value ? `${value[0]}/${types[value[0]][value[1]]}` : 'application/octet-stream';
     },
   }
 );
